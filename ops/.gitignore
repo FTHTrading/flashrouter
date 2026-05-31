@@ -1,0 +1,17 @@
+# Audit logs and operational state — never commit
+logs/audit.jsonl
+logs/incident-*.json
+logs/last_input.wav
+logs/pt_last.wav
+logs/pending-approvals/
+logs/decided/
+
+# Local env files
+.env
+.env.local
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/

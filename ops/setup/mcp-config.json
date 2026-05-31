@@ -1,0 +1,28 @@
+{
+  "$comment": "MCP server config for the xAI Grok CLI. Place at ~/.grok/mcp.json (Linux/macOS) or %USERPROFILE%\\.grok\\mcp.json (Windows). Secrets come from env vars, never embed them here.",
+  "mcpServers": {
+    "github": {
+      "command": "gh-mcp-server",
+      "args": [],
+      "env": {
+        "GITHUB_TOKEN": "${env:GITHUB_TOKEN}"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${env:HOME}/flashrouter"
+      ]
+    },
+    "postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres",
+        "${env:DATABASE_URL}"
+      ]
+    }
+  }
+}

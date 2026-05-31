@@ -1,0 +1,18 @@
+# Audio I/O
+sounddevice>=0.4.7
+numpy>=1.26.0
+
+# Push-to-talk hotkey (requires admin on Windows; sudo on Linux)
+keyboard>=0.13.5
+
+# Local Whisper STT (CPU works, GPU faster)
+faster-whisper>=1.0.0
+
+# HTTP for Grok + ElevenLabs
+httpx>=0.27.0
+
+# ElevenLabs streams MP3 — pydub for decode (needs ffmpeg installed system-wide)
+pydub>=0.25.1
+
+# Optional offline TTS fallback (set USE_LOCAL_TTS=true)
+pyttsx3>=2.90

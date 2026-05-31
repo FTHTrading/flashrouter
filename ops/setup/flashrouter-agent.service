@@ -1,0 +1,46 @@
+[Unit]
+Description=FlashRouter Grok-powered ops agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=flashrouter-agent
+Group=flashrouter-agent
+
+WorkingDirectory=/var/lib/flashrouter-agent/flashrouter
+EnvironmentFile=/etc/flashrouter-agent.env
+
+ExecStart=/var/lib/flashrouter-agent/venv/bin/python ops/agent/server-agent.py
+Restart=on-failure
+RestartSec=15s
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=flashrouter-agent
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/flashrouter-agent
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+
+# Resource limits
+LimitNOFILE=4096
+MemoryMax=1G
+CPUQuota=80%
+
+[Install]
+WantedBy=multi-user.target

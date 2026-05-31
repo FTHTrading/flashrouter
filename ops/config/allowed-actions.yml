@@ -1,0 +1,40 @@
+# Whitelist of tool calls the agent may execute WITHOUT human approval.
+# Anything not on this list (per tier) requires approval via approve.sh.
+#
+# Tiers:
+#   1 = read-only ops monitor (always-on server)
+#   2 = PR power (local + supervised sessions)
+#   3 = full DevOps (production server with explicit Tier 3 flag)
+#
+# This file is documentation. The actual enforcement is in agent/approval.py
+# and the per-tool min_tier in agent/tools.py.
+
+tier_1:
+  - read_file
+  - list_files
+  - gh_run        # gh PR/issue/run reads; destructive subcommands blocked at tool level
+  - git_run       # status/branch/diff/log/show only
+  - cast_run      # read-only on-chain queries
+  - notify        # webhook alerts to operator
+
+tier_2:
+  - "*tier_1*"
+  - forge_run     # build/test/fmt/coverage (no script/broadcast)
+  - npm_run       # test/build/lint in workspaces
+  - git_run       # add/commit (but never push to main; never --force)
+
+tier_3:
+  - "*tier_2*"
+  - docker_run    # compose up/down/logs/restart
+  - systemctl_run # restart agent, restart api (testnet only)
+  - testnet_deploy # forge script with --broadcast against TESTNET RPC only
+
+# Globally forbidden — never allowed even at Tier 3, even with approval
+forbidden:
+  - mainnet_deploy
+  - merge_to_main
+  - rotate_secrets
+  - modify_multisig
+  - disable_killswitch
+  - whitelist_asset
+  - fund_wallet

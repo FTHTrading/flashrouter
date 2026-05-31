@@ -1,0 +1,33 @@
+# Actions that ALWAYS require human approval, regardless of tier.
+# Approval requests land in ops/logs/pending-approvals/<id>.json.
+# Approve with: bash ops/scripts/approve.sh <id>
+# Deny with:    bash ops/scripts/approve.sh <id> deny
+# Default timeout: 10 minutes (deny by default).
+
+always_require_approval:
+
+  # Anything touching production
+  - any_action_with_string: "mainnet"
+  - any_action_with_string: "--broadcast"
+  - any_action_with_string: "--private-key"
+
+  # Anything irreversible at the filesystem level
+  - any_action_with_string: "rm -rf"
+  - any_action_with_string: "--force"
+
+  # Docker actions that stop services
+  - tool: docker_run
+    args_contain_any: ["down", "rm", "kill"]
+
+  # GitHub destructive
+  - tool: gh_run
+    args_contain_any: ["delete", "transfer", "auth"]
+
+  # Anything over a cost threshold
+  - estimated_cost_usd_above: 5
+
+  # Anything that's failed 3+ times in the last hour
+  - prior_failure_count_above: 3
+
+approval_timeout_minutes: 10
+default_decision_on_timeout: deny
