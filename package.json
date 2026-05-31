@@ -1,0 +1,24 @@
+{
+  "name": "flashrouter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FlashRouter — one API for every flash-loan provider, every EVM chain. Monorepo.",
+  "workspaces": [
+    "sdk",
+    "api",
+    "dashboard"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "dev:api": "npm run dev --workspace=@flashrouter/api",
+    "dev:dashboard": "npm run dev --workspace=@flashrouter/dashboard",
+    "contracts:build": "cd contracts && forge build",
+    "contracts:test": "cd contracts && forge test -vv",
+    "contracts:deploy": "cd contracts && forge script script/Deploy.s.sol --broadcast"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  }
+}

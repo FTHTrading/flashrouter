@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FlashRouter — One API. Every flash loan provider. Every chain.</title>
+<meta name="description" content="FlashRouter is unified flash-loan infrastructure: one contract call routes across Aave, Balancer, Uniswap and Maker on six chains to find the optimal lender and best fee automatically." />
+<meta property="og:title" content="FlashRouter — The flash-loan layer for serious DeFi" />
+<meta property="og:description" content="One API abstracts every major flash-loan provider behind a single interface. Optimal route, best fee, one transaction." />
+<meta property="og:type" content="website" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M6 8h6l8 8-8 8H6l8-8z' fill='%2300d4ff'/%3E%3Cpath d='M16 8h6l8 8-8 8h-6l8-8z' fill='%2300d4ff' opacity='.5'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="header" id="header">
+  <div class="wrap nav">
+    <a href="#top" class="brand" aria-label="FlashRouter home">
+      <svg class="logo" width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M5 6 L15 16 L5 26" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
+        <path d="M11 6 L21 16 L11 26" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+        <path d="M17 6 L27 16 L17 26" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      FlashRouter
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#how">How it works</a>
+      <a href="#providers">Providers</a>
+      <a href="#products">Products</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#security">Security</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="#" class="btn btn-ghost">Read Docs</a>
+      <a href="#pricing" class="btn btn-primary">Get API Key</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="wrap mobile-menu" id="mobileMenu">
+    <a href="#how">How it works</a>
+    <a href="#providers">Providers</a>
+    <a href="#products">Products</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#security">Security</a>
+    <a href="#" class="btn btn-secondary">Read Docs</a>
+    <a href="#pricing" class="btn btn-primary">Get API Key</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="hero-badge"><span class="dot"></span> v3 live on 6 chains · Tron in Phase 2</span>
+        <h1>One API.<br/><span class="accent">Every</span> flash loan provider.<br/>Every chain.</h1>
+        <p class="hero-sub">FlashRouter abstracts Aave, Balancer, Uniswap and Maker behind a single interface. One contract call, the optimal route across every lender, the best fee selected automatically.</p>
+        <div class="hero-ctas">
+          <a href="#pricing" class="btn btn-primary">Get API Key
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#" class="btn btn-secondary">Read Docs</a>
+        </div>
+        <div class="hero-meta">
+          <span>Non-custodial</span>
+          <span>Audited contracts</span>
+          <span>Open-source SDK</span>
+        </div>
+      </div>
+
+      <div class="code-window" aria-label="FlashRouter SDK example">
+        <div class="code-titlebar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="fname">flash.ts</span>
+        </div>
+        <pre class="code-body" id="heroCode"></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ METRICS ============ -->
+<section class="metrics" aria-label="Network metrics">
+  <div class="wrap">
+    <div class="metrics-grid">
+      <div class="metric"><div class="num"><span class="accent">$</span>4.2<span class="accent">B</span></div><div class="label">Notional routed</div></div>
+      <div class="metric"><div class="num">1,847,302</div><div class="label">Flash loans executed</div></div>
+      <div class="metric"><div class="num">6</div><div class="label">Integrated chains</div></div>
+      <div class="metric"><div class="num">4</div><div class="label">Lender protocols</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROBLEM ============ -->
+<section class="section" id="problem">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The problem</span>
+      <h2>Four providers. Four integrations. One full-time job.</h2>
+      <p>Every flash-loan provider has a different interface, different fees, different chains and different gas profiles. Integrating one is hard. Integrating four is a maintenance burden you carry forever.</p>
+    </div>
+    <div class="compare reveal">
+      <div>
+        <div class="compare-label bad"><span class="tag">Before</span> Fragmented, per-provider</div>
+        <div class="code-window">
+          <div class="code-titlebar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">the_old_way.ts</span></div>
+          <pre class="code-body"><span class="ln"><span class="tok-com">// Aave V3 — premium 0.05%, ERC-3156-ish</span></span>
+<span class="ln"><span class="tok-key">await</span> <span class="tok-var">pool</span><span class="tok-punc">.</span><span class="tok-fn">flashLoanSimple</span><span class="tok-punc">(</span><span class="tok-var">recv</span><span class="tok-punc">,</span> <span class="tok-var">asset</span><span class="tok-punc">,</span> <span class="tok-var">amt</span><span class="tok-punc">,</span> <span class="tok-var">params</span><span class="tok-punc">,</span> <span class="tok-num">0</span><span class="tok-punc">);</span></span>
+<span class="ln"></span>
+<span class="ln"><span class="tok-com">// Balancer V2 — 0% fee, vault callback</span></span>
+<span class="ln"><span class="tok-key">await</span> <span class="tok-var">vault</span><span class="tok-punc">.</span><span class="tok-fn">flashLoan</span><span class="tok-punc">(</span><span class="tok-var">recv</span><span class="tok-punc">,</span> <span class="tok-var">tokens</span><span class="tok-punc">,</span> <span class="tok-var">amounts</span><span class="tok-punc">,</span> <span class="tok-var">data</span><span class="tok-punc">);</span></span>
+<span class="ln"></span>
+<span class="ln"><span class="tok-com">// Uniswap V3 — flash() per-pool, fee tiers</span></span>
+<span class="ln"><span class="tok-key">await</span> <span class="tok-var">pool</span><span class="tok-punc">.</span><span class="tok-fn">flash</span><span class="tok-punc">(</span><span class="tok-var">recv</span><span class="tok-punc">,</span> <span class="tok-var">amt0</span><span class="tok-punc">,</span> <span class="tok-var">amt1</span><span class="tok-punc">,</span> <span class="tok-var">data</span><span class="tok-punc">);</span></span>
+<span class="ln"></span>
+<span class="ln"><span class="tok-com">// Maker DSS-Flash — DAI only, 0% fee</span></span>
+<span class="ln"><span class="tok-key">await</span> <span class="tok-var">dss</span><span class="tok-punc">.</span><span class="tok-fn">flashLoan</span><span class="tok-punc">(</span><span class="tok-var">recv</span><span class="tok-punc">,</span> <span class="tok-var">dai</span><span class="tok-punc">,</span> <span class="tok-var">amt</span><span class="tok-punc">,</span> <span class="tok-var">data</span><span class="tok-punc">);</span></span>
+<span class="ln"></span>
+<span class="ln"><span class="tok-com">// + per-chain addresses, gas tuning, fee math…</span></span></pre>
+        </div>
+      </div>
+      <div>
+        <div class="compare-label good"><span class="tag">After</span> One FlashRouter call</div>
+        <div class="code-window">
+          <div class="code-titlebar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">the_flashrouter_way.ts</span></div>
+          <pre class="code-body"><span class="ln"><span class="tok-key">import</span> <span class="tok-punc">{</span> <span class="tok-type">FlashRouter</span> <span class="tok-punc">}</span> <span class="tok-key">from</span> <span class="tok-str">"@flashrouter/sdk"</span><span class="tok-punc">;</span></span>
+<span class="ln"></span>
+<span class="ln"><span class="tok-key">const</span> <span class="tok-var">fr</span> <span class="tok-punc">=</span> <span class="tok-key">new</span> <span class="tok-type">FlashRouter</span><span class="tok-punc">({</span> <span class="tok-prop">chain</span><span class="tok-punc">:</span> <span class="tok-str">"base"</span> <span class="tok-punc">});</span></span>
+<span class="ln"></span>
+<span class="ln"><span class="tok-com">// Best provider + lowest fee, picked for you.</span></span>
+<span class="ln"><span class="tok-key">await</span> <span class="tok-var">fr</span><span class="tok-punc">.</span><span class="tok-fn">borrow</span><span class="tok-punc">({</span></span>
+<span class="ln">  <span class="tok-prop">asset</span><span class="tok-punc">:</span> <span class="tok-str">"USDC"</span><span class="tok-punc">,</span></span>
+<span class="ln">  <span class="tok-prop">amount</span><span class="tok-punc">:</span> <span class="tok-num">5_000_000</span><span class="tok-punc">,</span></span>
+<span class="ln">  <span class="tok-prop">execute</span><span class="tok-punc">:</span> <span class="tok-var">myStrategy</span><span class="tok-punc">,</span>   <span class="tok-com">// your callback</span></span>
+<span class="ln"><span class="tok-punc">});</span></span>
+<span class="ln"></span>
+<span class="ln"><span class="tok-com">// Same code on Ethereum, Arbitrum, Optimism…</span></span></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>A smart router between your strategy and every lender.</h2>
+      <p>You call FlashRouter once. It quotes every integrated provider, selects the cheapest viable route, executes your logic and settles — all inside a single atomic transaction.</p>
+    </div>
+
+    <div class="diagram-wrap reveal">
+      <svg class="diagram" viewBox="0 0 980 300" role="img" aria-label="FlashRouter routing flow diagram">
+        <defs>
+          <marker id="arrow" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="#00d4ff"/></marker>
+          <marker id="arrowDim" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="#2c323b"/></marker>
+        </defs>
+        <!-- User -->
+        <rect x="10" y="120" width="120" height="60" rx="8" fill="#15181c" stroke="#2c323b"/>
+        <text x="70" y="146" text-anchor="middle" fill="#e8ecf1" font-family="Inter,sans-serif" font-size="14" font-weight="600">Your dApp</text>
+        <text x="70" y="164" text-anchor="middle" fill="#8b94a3" font-family="JetBrains Mono,monospace" font-size="10">fr.borrow()</text>
+        <line x1="130" y1="150" x2="200" y2="150" stroke="#00d4ff" stroke-width="2" marker-end="url(#arrow)"/>
+
+        <!-- Router -->
+        <rect x="205" y="105" width="150" height="90" rx="8" fill="#0d1417" stroke="#00d4ff"/>
+        <text x="280" y="138" text-anchor="middle" fill="#00d4ff" font-family="Inter,sans-serif" font-size="14" font-weight="700">Smart Router</text>
+        <text x="280" y="158" text-anchor="middle" fill="#8b94a3" font-family="JetBrains Mono,monospace" font-size="9.5">quote · rank · route</text>
+        <text x="280" y="174" text-anchor="middle" fill="#5a626f" font-family="JetBrains Mono,monospace" font-size="9">best fee selected</text>
+
+        <!-- fan out to providers -->
+        <line x1="355" y1="130" x2="470" y2="60"  stroke="#2c323b" stroke-width="1.5" marker-end="url(#arrowDim)"/>
+        <line x1="355" y1="145" x2="470" y2="115" stroke="#2c323b" stroke-width="1.5" marker-end="url(#arrowDim)"/>
+        <line x1="355" y1="155" x2="470" y2="185" stroke="#00d4ff" stroke-width="2"   marker-end="url(#arrow)"/>
+        <line x1="355" y1="170" x2="470" y2="240" stroke="#2c323b" stroke-width="1.5" marker-end="url(#arrowDim)"/>
+
+        <!-- providers -->
+        <g font-family="Inter,sans-serif" font-size="12" font-weight="600">
+          <rect x="475" y="42"  width="120" height="38" rx="6" fill="#15181c" stroke="#2c323b"/><text x="535" y="66" text-anchor="middle" fill="#8b94a3">Aave V3</text>
+          <rect x="475" y="98"  width="120" height="38" rx="6" fill="#15181c" stroke="#2c323b"/><text x="535" y="122" text-anchor="middle" fill="#8b94a3">Balancer V2</text>
+          <rect x="475" y="166" width="120" height="38" rx="6" fill="#0d1417" stroke="#00d4ff"/><text x="535" y="190" text-anchor="middle" fill="#e8ecf1">Uniswap V3</text>
+          <rect x="475" y="222" width="120" height="38" rx="6" fill="#15181c" stroke="#2c323b"/><text x="535" y="246" text-anchor="middle" fill="#8b94a3">Maker DSS</text>
+        </g>
+
+        <!-- selected route to execute -->
+        <line x1="595" y1="185" x2="700" y2="150" stroke="#00d4ff" stroke-width="2" marker-end="url(#arrow)"/>
+        <rect x="705" y="120" width="120" height="60" rx="8" fill="#15181c" stroke="#2c323b"/>
+        <text x="765" y="146" text-anchor="middle" fill="#e8ecf1" font-family="Inter,sans-serif" font-size="13" font-weight="600">Execute</text>
+        <text x="765" y="164" text-anchor="middle" fill="#8b94a3" font-family="JetBrains Mono,monospace" font-size="10">your callback</text>
+
+        <line x1="825" y1="150" x2="895" y2="150" stroke="#00d4ff" stroke-width="2" marker-end="url(#arrow)"/>
+        <rect x="900" y="120" width="72" height="60" rx="8" fill="#0d1417" stroke="#00d4ff"/>
+        <text x="936" y="146" text-anchor="middle" fill="#00d4ff" font-family="Inter,sans-serif" font-size="13" font-weight="700">Settle</text>
+        <text x="936" y="164" text-anchor="middle" fill="#8b94a3" font-family="JetBrains Mono,monospace" font-size="9">1 tx</text>
+      </svg>
+    </div>
+
+    <div class="steps reveal">
+      <div class="step"><div class="n">01</div><h4>Request</h4><p>Call <span class="mono">borrow()</span> with an asset and amount. No provider plumbing.</p></div>
+      <div class="step"><div class="n">02</div><h4>Quote &amp; rank</h4><p>The router quotes every lender on-chain and ranks by fee and available liquidity.</p></div>
+      <div class="step"><div class="n">03</div><h4>Route</h4><p>The cheapest viable lender is selected automatically and the loan is opened.</p></div>
+      <div class="step"><div class="n">04</div><h4>Execute</h4><p>Your callback runs with borrowed capital — arbitrage, liquidate, swap, refinance.</p></div>
+      <div class="step"><div class="n">05</div><h4>Settle</h4><p>Principal and fee repay in the same transaction. Reverts atomically if it can't.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROVIDERS ============ -->
+<section class="section" id="providers">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Coverage</span>
+      <h2>The lenders and chains, behind one interface.</h2>
+      <p>Add a provider or a chain by changing a config string — not by rewriting your integration.</p>
+    </div>
+
+    <div class="prov-block reveal">
+      <h3>Lender protocols</h3>
+      <div class="logo-wall">
+        <div class="logo-chip"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 15l4-9 4 9M9.5 12h5"/></svg><div><div class="name">Aave</div><div class="sub">V3 · simple flash</div></div></div>
+        <div class="logo-chip"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="8.5" y="13" width="7" height="7" rx="1"/></svg><div><div class="name">Balancer</div><div class="sub">V2 · vault, 0% fee</div></div></div>
+        <div class="logo-chip"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="15" r="5"/></svg><div><div class="name">Uniswap</div><div class="sub">V3 · pool flash</div></div></div>
+        <div class="logo-chip"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18V6l8 6 8-6v12"/></svg><div><div class="name">MakerDAO</div><div class="sub">DSS-Flash · DAI</div></div></div>
+      </div>
+    </div>
+
+    <div class="prov-block reveal">
+      <h3>Supported chains</h3>
+      <div class="logo-wall">
+        <div class="logo-chip"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 2l7 10-7 4-7-4z"/><path d="M5 13l7 9 7-9-7 4z"/></svg><div class="name">Ethereum</div></div>
+        <div class="logo-chip"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 9.5a3 3 0 110 5"/></svg><div class="name">Base</div></div>
+        <div class="logo-chip"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 16l3-8 3 8M8 13h8"/></svg><div class="name">Arbitrum</div></div>
+        <div class="logo-chip"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></svg><div class="name">Optimism</div></div>
+        <div class="logo-chip"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 4v8l-7 4-7-4V7z"/></svg><div class="name">BNB Chain</div></div>
+        <div class="logo-chip"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8l5-3 5 3v6l-5 3-5-3z"/><path d="M12 5v6l5 3"/></svg><div class="name">Polygon</div></div>
+        <div class="logo-chip" style="opacity:.55"><svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg><div><div class="name">Tron</div><div class="sub">Phase 2</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUCTS ============ -->
+<section class="section" id="products">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Three ways to build</span>
+      <h2>From raw SDK to fully managed.</h2>
+      <p>Whether you write Solidity by hand, assemble strategies in a browser, or want us to run the bots, FlashRouter meets your team where it is.</p>
+    </div>
+    <div class="cards-3">
+      <div class="pcard reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/></svg></div>
+        <div class="tier-tag">Self-serve</div>
+        <h3>FlashRouter SDK</h3>
+        <p>A TypeScript SDK and REST API for developers who want full control. One interface, optimal routing, every chain.</p>
+        <ul>
+          <li>TypeScript &amp; Solidity bindings</li>
+          <li>On-chain quote &amp; route engine</li>
+          <li>Simulation and gas estimation</li>
+          <li>Self-hosted or hosted RPC</li>
+        </ul>
+      </div>
+      <div class="pcard reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="7" height="7" rx="1"/><rect x="14" y="4" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 17.5h7M17.5 14v7"/></svg></div>
+        <div class="tier-tag">No-code web app</div>
+        <h3>Strategy Builder</h3>
+        <p>Compose flash-loan strategies visually — borrow, swap, liquidate, repay — and deploy them without writing a contract.</p>
+        <ul>
+          <li>Drag-and-drop strategy graph</li>
+          <li>Live simulation before deploy</li>
+          <li>Templates for common plays</li>
+          <li>One-click multi-chain deploy</li>
+        </ul>
+      </div>
+      <div class="pcard reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></div>
+        <div class="tier-tag">Fully managed</div>
+        <h3>Managed Bots</h3>
+        <p>We run production strategies on your behalf. You provide capital or a subscription; we operate, monitor and tune the bots.</p>
+        <ul>
+          <li>24/7 monitored execution</li>
+          <li>Arbitrage &amp; liquidation desks</li>
+          <li>Performance dashboard</li>
+          <li>20% profit share, no lock-up</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USE CASES ============ -->
+<section class="section" id="use-cases">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Built for</span>
+      <h2>Capital-efficient strategies, in one transaction.</h2>
+    </div>
+    <div class="uc-grid reveal">
+      <div class="uc"><svg class="uc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8M21 7v5M21 7h-5"/></svg><h4>Arbitrage</h4><p>Borrow, buy low on one venue, sell high on another, repay — all atomically, with zero starting capital.</p></div>
+      <div class="uc"><svg class="uc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6M12 22v-6M4 12H2M22 12h-2"/><circle cx="12" cy="12" r="4"/></svg><h4>Liquidations</h4><p>Flash-borrow the repay asset, seize undercollateralized positions and capture the bonus without pre-funding.</p></div>
+      <div class="uc"><svg class="uc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 7h10l-3-3M17 17H7l3 3"/></svg><h4>Collateral swaps</h4><p>Swap the collateral backing a loan in a single transaction, never unwinding or risking liquidation.</p></div>
+      <div class="uc"><svg class="uc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-3-6.7M21 4v4h-4"/></svg><h4>Refinancing</h4><p>Move debt from a high-rate market to a cheaper one instantly, without finding interim capital.</p></div>
+      <div class="uc"><svg class="uc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l9 16H3z"/><path d="M12 9v4M12 16h.01"/></svg><h4>Self-liquidation</h4><p>Close your own at-risk position on your terms, avoiding the liquidation penalty entirely.</p></div>
+      <div class="uc"><svg class="uc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l16 16M20 4L4 20"/><circle cx="12" cy="12" r="3"/></svg><h4>MEV</h4><p>Bundle flash liquidity into searcher strategies and submit through your preferred relay.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CODE EXAMPLE ============ -->
+<section class="section" id="example">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">In practice</span>
+      <h2>A working arbitrage strategy, end to end.</h2>
+      <p>Borrow USDC, route a swap across two DEXs, repay the loan and keep the spread — the router picks the cheapest lender automatically.</p>
+    </div>
+    <div class="code-window reveal" style="max-width:880px">
+      <div class="code-titlebar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">arbitrage.ts</span></div>
+      <pre class="code-body" style="font-size:0.8rem"><span class="ln"><span class="tok-key">import</span> <span class="tok-punc">{</span> <span class="tok-type">FlashRouter</span><span class="tok-punc">,</span> <span class="tok-type">swap</span> <span class="tok-punc">}</span> <span class="tok-key">from</span> <span class="tok-str">"@flashrouter/sdk"</span><span class="tok-punc">;</span></span>
+<span class="ln"></span>
+<span class="ln"><span class="tok-key">const</span> <span class="tok-var">fr</span> <span class="tok-punc">=</span> <span class="tok-key">new</span> <span class="tok-type">FlashRouter</span><span class="tok-punc">({</span> <span class="tok-prop">chain</span><span class="tok-punc">:</span> <span class="tok-str">"arbitrum"</span><span class="tok-punc">,</span> <span class="tok-prop">signer</span> <span class="tok-punc">});</span></span>
+<span class="ln"></span>
+<span class="ln"><span class="tok-com">// Borrow 2M USDC. FlashRouter ranks Aave / Balancer /</span></span>
+<span class="ln"><span class="tok-com">// Uniswap / Maker by fee + liquidity and routes for you.</span></span>
+<span class="ln"><span class="tok-key">const</span> <span class="tok-var">result</span> <span class="tok-punc">=</span> <span class="tok-key">await</span> <span class="tok-var">fr</span><span class="tok-punc">.</span><span class="tok-fn">borrow</span><span class="tok-punc">({</span></span>
+<span class="ln">  <span class="tok-prop">asset</span><span class="tok-punc">:</span> <span class="tok-str">"USDC"</span><span class="tok-punc">,</span></span>
+<span class="ln">  <span class="tok-prop">amount</span><span class="tok-punc">:</span> <span class="tok-num">2_000_000</span><span class="tok-punc">,</span></span>
+<span class="ln">  <span class="tok-prop">execute</span><span class="tok-punc">:</span> <span class="tok-key">async</span> <span class="tok-punc">(</span><span class="tok-var">ctx</span><span class="tok-punc">)</span> <span class="tok-punc">=></span> <span class="tok-punc">{</span></span>
+<span class="ln">    <span class="tok-com">// 1. Buy WETH cheap on Uniswap</span></span>
+<span class="ln">    <span class="tok-key">const</span> <span class="tok-var">weth</span> <span class="tok-punc">=</span> <span class="tok-key">await</span> <span class="tok-fn">swap</span><span class="tok-punc">(</span><span class="tok-var">ctx</span><span class="tok-punc">,</span> <span class="tok-punc">{</span> <span class="tok-prop">dex</span><span class="tok-punc">:</span> <span class="tok-str">"uniswap"</span><span class="tok-punc">,</span></span>
+<span class="ln">      <span class="tok-prop">from</span><span class="tok-punc">:</span> <span class="tok-str">"USDC"</span><span class="tok-punc">,</span> <span class="tok-prop">to</span><span class="tok-punc">:</span> <span class="tok-str">"WETH"</span><span class="tok-punc">,</span> <span class="tok-prop">amount</span><span class="tok-punc">:</span> <span class="tok-var">ctx</span><span class="tok-punc">.</span><span class="tok-prop">amount</span> <span class="tok-punc">});</span></span>
+<span class="ln"></span>
+<span class="ln">    <span class="tok-com">// 2. Sell it back richer on Curve</span></span>
+<span class="ln">    <span class="tok-key">return</span> <span class="tok-fn">swap</span><span class="tok-punc">(</span><span class="tok-var">ctx</span><span class="tok-punc">,</span> <span class="tok-punc">{</span> <span class="tok-prop">dex</span><span class="tok-punc">:</span> <span class="tok-str">"curve"</span><span class="tok-punc">,</span></span>
+<span class="ln">      <span class="tok-prop">from</span><span class="tok-punc">:</span> <span class="tok-str">"WETH"</span><span class="tok-punc">,</span> <span class="tok-prop">to</span><span class="tok-punc">:</span> <span class="tok-str">"USDC"</span><span class="tok-punc">,</span> <span class="tok-prop">amount</span><span class="tok-punc">:</span> <span class="tok-var">weth</span> <span class="tok-punc">});</span></span>
+<span class="ln">  <span class="tok-punc">},</span></span>
+<span class="ln"><span class="tok-punc">});</span></span>
+<span class="ln"></span>
+<span class="ln"><span class="tok-com">// Loan + fee repaid atomically. Spread is yours.</span></span>
+<span class="ln"><span class="tok-var">console</span><span class="tok-punc">.</span><span class="tok-fn">log</span><span class="tok-punc">(</span><span class="tok-var">result</span><span class="tok-punc">.</span><span class="tok-prop">profit</span><span class="tok-punc">,</span> <span class="tok-var">result</span><span class="tok-punc">.</span><span class="tok-prop">provider</span><span class="tok-punc">,</span> <span class="tok-var">result</span><span class="tok-punc">.</span><span class="tok-prop">feeBps</span><span class="tok-punc">);</span></span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Pricing</span>
+      <h2>Start free. Pay as you route.</h2>
+      <p>A flat 2 bps on flash-loan notional applies across all tiers. SaaS plans add higher rate limits, support and managed services.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <div class="plan">Free <span></span></div>
+        <div class="amount">$0</div>
+        <p class="desc">For prototypes and solo builders shipping their first strategy.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Full SDK &amp; REST API access</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> All 6 chains, all 4 providers</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> 25,000 API calls / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Community support</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> 2 bps on routed notional</li>
+        </ul>
+        <a href="#" class="btn btn-secondary">Get API Key</a>
+      </div>
+      <div class="price-card featured reveal">
+        <div class="plan">Pro <span class="badge">Popular</span></div>
+        <div class="amount">$499<span> / mo</span></div>
+        <p class="desc">For trading desks and teams running strategies in production.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Everything in Free</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> 5,000,000 API calls / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Strategy Builder web app</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Priority routing &amp; dedicated RPC</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Email &amp; Slack support, 99.9% SLA</li>
+        </ul>
+        <a href="#" class="btn btn-primary">Start Pro</a>
+      </div>
+      <div class="price-card reveal">
+        <div class="plan">Enterprise <span></span></div>
+        <div class="amount">Contact us</div>
+        <p class="desc">For funds and protocols at scale, with managed execution.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Everything in Pro</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Unlimited / metered API</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Managed Bot Platform (20% profit share)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Custom volume pricing on bps</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> KYB onboarding, dedicated engineer</li>
+        </ul>
+        <a href="#" class="btn btn-secondary">Talk to sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECURITY ============ -->
+<section class="section" id="security">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Compliance &amp; security</span>
+      <h2>Infrastructure you can put real capital behind.</h2>
+      <p>FlashRouter never touches your funds. Everything that moves value is on-chain, audited and verifiable.</p>
+    </div>
+    <div class="sec-grid">
+      <div class="sec-item reveal"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg><div><h4>Audited contracts</h4><p>Router contracts are audited by independent firms with public reports. Every deployment is reproducible and verified on the explorer.</p></div></div>
+      <div class="sec-item reveal"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg><div><h4>Non-custodial by design</h4><p>FlashRouter never holds, escrows or pools user funds. Capital only ever exists inside your own atomic transaction.</p></div></div>
+      <div class="sec-item reveal"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/></svg><div><h4>Open-source SDK</h4><p>The SDK and routing logic are open source under a permissive license. Read it, fork it, run your own RPC.</p></div></div>
+      <div class="sec-item reveal"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><h4>On-chain transparency</h4><p>Every route, fee and settlement is emitted on-chain. Reconcile our metrics against block explorers at any time.</p></div></div>
+      <div class="sec-item reveal"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V7z"/><circle cx="12" cy="11" r="2"/><path d="M12 13v3"/></svg><div><h4>KYB for enterprise</h4><p>Managed services and enterprise volume include know-your-business onboarding and contractual SLAs.</p></div></div>
+      <div class="sec-item warn reveal"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg><div><h4>No fake-token or flash-USDT scams</h4><p>FlashRouter is real DeFi infrastructure. We do not support, enable or tolerate fake-token minting or "flash USDT" balance-spoofing schemes. Accounts attempting them are terminated.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <h2>Borrow billions in one transaction.</h2>
+      <p>Ship your first flash-loan strategy in an afternoon. Free to start, no card required.</p>
+      <div class="hero-ctas">
+        <a href="#pricing" class="btn btn-primary">Get API Key</a>
+        <a href="#" class="btn btn-secondary">Read Docs</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a href="#top" class="brand" aria-label="FlashRouter home">
+          <svg class="logo" width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M5 6 L15 16 L5 26" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
+            <path d="M11 6 L21 16 L11 26" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+            <path d="M17 6 L27 16 L17 26" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          FlashRouter
+        </a>
+        <p class="footer-about">The flash-loan layer for serious DeFi. One API, every provider, every chain.</p>
+        <span class="status-pill"><span class="dot"></span> All systems operational</span>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <a href="#products">SDK &amp; API</a>
+        <a href="#products">Strategy Builder</a>
+        <a href="#products">Managed Bots</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+      <div class="footer-col">
+        <h5>Developers</h5>
+        <a href="#">Documentation</a>
+        <a href="#">GitHub</a>
+        <a href="#">API Status</a>
+        <a href="#example">Examples</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="#">Twitter / X</a>
+        <a href="#security">Security</a>
+        <a href="#">Contact</a>
+        <a href="#">Audits</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 FlashRouter Labs. FlashRouter is non-custodial software infrastructure and is not a lender, broker or financial advisor. Flash loans carry smart-contract and market risk; nothing here is financial advice.</p>
+      <p class="mono">Built for builders.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js" defer></script>
+</body>
+</html>

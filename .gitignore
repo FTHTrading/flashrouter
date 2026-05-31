@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.pnp.*
+.yarn/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.turbo/
+
+# Foundry
+cache/
+broadcast/
+artifacts/
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Test
+coverage/
+*.lcov
+.nyc_output/
+
+# Misc
+tmp/
+.cache/
