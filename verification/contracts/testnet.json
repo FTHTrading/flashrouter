@@ -1,0 +1,8 @@
+{
+  "$schema": "../schema/contracts.schema.json",
+  "schema_version": 1,
+  "stage": "pre-launch",
+  "last_updated": "2026-05-31T00:00:00Z",
+  "note": "Empty pre-launch. Testnet deployments (Sepolia, Base Sepolia, Arbitrum Sepolia, OP Sepolia, BNB testnet, Polygon Amoy) populate this file.",
+  "deployments": []
+}

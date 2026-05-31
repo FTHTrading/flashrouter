@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FlashRouter Contracts Registry",
+  "type": "object",
+  "required": ["schema_version", "stage", "last_updated", "deployments"],
+  "properties": {
+    "schema_version": { "type": "integer", "const": 1 },
+    "stage": { "type": "string", "enum": ["pre-launch", "testnet", "mainnet"] },
+    "last_updated": { "type": "string", "format": "date-time" },
+    "note": { "type": "string" },
+    "deployments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["chain", "chain_id", "contract", "address", "deploy_tx", "deploy_block", "deployer", "release_tag"],
+        "properties": {
+          "chain": { "type": "string", "examples": ["ethereum", "base", "arbitrum", "optimism", "bnb", "polygon"] },
+          "chain_id": { "type": "integer" },
+          "contract": { "type": "string", "enum": ["FlashRouter", "FeeCollector", "AaveV3Adapter", "BalancerV2Adapter", "UniswapV3Adapter", "MakerAdapter"] },
+          "address": { "type": "string", "pattern": "^0x[a-fA-F0-9]{40}$" },
+          "admin": { "type": "string", "pattern": "^0x[a-fA-F0-9]{40}$" },
+          "deploy_tx": { "type": "string", "pattern": "^0x[a-fA-F0-9]{64}$" },
+          "deploy_block": { "type": "integer" },
+          "deployer": { "type": "string", "pattern": "^0x[a-fA-F0-9]{40}$" },
+          "release_tag": { "type": "string", "examples": ["v1.0.0"] },
+          "source_hash": { "type": "string", "pattern": "^0x[a-fA-F0-9]{64}$" },
+          "block_explorer_url": { "type": "string", "format": "uri" }
+        }
+      }
+    }
+  }
+}

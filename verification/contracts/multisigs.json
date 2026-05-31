@@ -1,0 +1,8 @@
+{
+  "$schema": "../schema/multisigs.schema.json",
+  "schema_version": 1,
+  "stage": "pre-launch",
+  "last_updated": "2026-05-31T00:00:00Z",
+  "note": "Multisig addresses for FlashRouter admin + treasury. Empty pre-launch. Populated when Safe deployments occur on each chain. All multisigs are M-of-N where N >= 5 and M >= 3 for routine ops; mainnet upgrades require 5-of-9 with 7-day timelock.",
+  "multisigs": []
+}

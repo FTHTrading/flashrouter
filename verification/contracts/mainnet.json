@@ -1,0 +1,8 @@
+{
+  "$schema": "../schema/contracts.schema.json",
+  "schema_version": 1,
+  "stage": "pre-launch",
+  "last_updated": "2026-05-31T00:00:00Z",
+  "note": "Empty pre-launch. Mainnet deployments populate this file. Every entry is committed in the same PR as the deploy receipt, signed by the deploying multisig.",
+  "deployments": []
+}

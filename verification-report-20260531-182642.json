@@ -1,0 +1,80 @@
+{
+  "checks": [
+    {
+      "name": "verification/contracts/mainnet.json valid JSON",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "name": "verification/contracts/testnet.json valid JSON",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "name": "verification/contracts/multisigs.json valid JSON",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "name": "verification/contracts/verification-status.json valid JSON",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "name": "Registry stage consistent",
+      "status": "pass",
+      "detail": "pre-launch"
+    },
+    {
+      "name": "Mainnet deployments",
+      "status": "warn",
+      "detail": "none yet (pre-launch)"
+    },
+    {
+      "name": "Source verification records",
+      "status": "warn",
+      "detail": "none yet (pre-launch)"
+    },
+    {
+      "name": "Audit reports",
+      "status": "warn",
+      "detail": "none yet (pre-launch)"
+    },
+    {
+      "name": "COMPLIANCE.md present",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "name": "SECURITY.md present",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "name": "VERIFICATION.md present",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "name": "LICENSE present",
+      "status": "pass",
+      "detail": ""
+    },
+    {
+      "name": "SDK enforces verified-asset whitelist",
+      "status": "pass",
+      "detail": "AssetNotVerifiedError defined"
+    },
+    {
+      "name": "Contract enforces verified-asset whitelist",
+      "status": "pass",
+      "detail": "AssetNotVerified error present"
+    }
+  ],
+  "summary": {
+    "pass": 11,
+    "warn": 3,
+    "fail": 0,
+    "timestamp": "2026-05-31T18:26:42Z"
+  }
+}

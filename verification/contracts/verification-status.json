@@ -1,0 +1,8 @@
+{
+  "$schema": "../schema/verification-status.schema.json",
+  "schema_version": 1,
+  "stage": "pre-launch",
+  "last_updated": "2026-05-31T00:00:00Z",
+  "note": "Block-explorer verification status for every deployed contract. Empty pre-launch. Every entry is auto-populated by .github/workflows/verify-deploys.yml within 24h of any deploy.",
+  "verifications": []
+}
