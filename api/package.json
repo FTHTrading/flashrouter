@@ -15,7 +15,7 @@
     "@fastify/helmet": "^11.0.0",
     "@fastify/rate-limit": "^9.0.0",
     "@fastify/swagger": "^8.0.0",
-    "@fastify/swagger-ui": "^3.0.0",
+    "@fastify/swagger-ui": "^5.2.6",
     "fastify": "^4.27.0",
     "fastify-plugin": "^4.5.1",
     "pg": "^8.11.0",
