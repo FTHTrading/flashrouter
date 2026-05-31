@@ -217,3 +217,56 @@ You should see green for: API key valid, GitHub auth ok, Foundry installed, agen
 - Wire the voice client to your AirPods / desk mic
 - Add Discord / Slack relay so Grok can post status updates
 - Hook into the on-chain indexer once contracts are deployed
+
+---
+
+## agent-status-endpoint
+
+The weekday 7 AM "FlashRouter ops" briefing needs to read your VPS agent's health (systemd status, last cycle, pending approvals, denials, budget burn). Since the briefing runs in the cloud and your VPS is on its own network, the agent **publishes** its status to a private GitHub Gist every 5 minutes, and the briefing **reads** from that gist.
+
+Zero new infrastructure. Already authenticated. Auditable revisions.
+
+### One-time setup on the VPS
+
+```bash
+# Give the agent's gh CLI the gist scope (once)
+sudo -u flashrouter-agent gh auth refresh -s gist
+
+# Install the 5-minute cron
+sudo cp ops/setup/agent-status-cron /etc/cron.d/flashrouter-agent-status
+sudo chmod 644 /etc/cron.d/flashrouter-agent-status
+
+# Verify (wait 5 min, then check)
+sudo -u flashrouter-agent gh gist list --limit 5
+# You should see a private gist titled "flashrouter-agent-status"
+
+# Tail the upload log
+sudo tail -f /var/log/flashrouter-agent-status.log
+```
+
+### What gets uploaded
+
+```jsonc
+{
+  "schema_version": 1,
+  "ts": "2026-06-01T11:00:00Z",
+  "hostname": "vps-01",
+  "service_active": true,
+  "last_cycle_at": "2026-06-01T10:55:12Z",
+  "audit_tail_recent": [ /* last 100 audit records */ ],
+  "pending_approvals": [ /* anything waiting on you */ ],
+  "denied_since_yesterday": [ /* approval_denied, approval_timeout, etc */ ],
+  "budget_used_usd": 0.42,
+  "budget_cap_usd": 5
+}
+```
+
+### Privacy
+
+- Gists created with `gh gist create` default to **secret** (not indexed, not public)
+- Only API calls authenticated with your GitHub token can read it
+- If you ever rotate your GitHub PAT, the briefing automatically picks up the new one
+
+### What if the gist isn't available?
+
+The briefing degrades gracefully. The first run will include a one-line setup reminder. After you wire it, the daily emails get full agent visibility.

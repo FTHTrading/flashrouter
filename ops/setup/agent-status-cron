@@ -1,0 +1,18 @@
+# /etc/cron.d/flashrouter-agent-status
+# Uploads VPS agent self-report to a private GitHub Gist every 5 minutes.
+# The 7 AM weekday "FlashRouter ops" briefing reads from that gist.
+#
+# Install:
+#   sudo cp ops/setup/agent-status-cron /etc/cron.d/flashrouter-agent-status
+#   sudo chmod 644 /etc/cron.d/flashrouter-agent-status
+#   sudo chown root:root /etc/cron.d/flashrouter-agent-status
+#
+# The flashrouter-agent user must have `gh` authenticated with a token that
+# has `gist` scope:
+#   sudo -u flashrouter-agent gh auth login
+#   sudo -u flashrouter-agent gh auth refresh -s gist
+
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/bin:/bin
+
+*/5 * * * * flashrouter-agent /var/lib/flashrouter-agent/flashrouter/ops/scripts/upload-status.sh >> /var/log/flashrouter-agent-status.log 2>&1
