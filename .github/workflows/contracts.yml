@@ -6,9 +6,18 @@ on:
     paths: ["contracts/**", ".github/workflows/contracts.yml"]
   pull_request:
     paths: ["contracts/**", ".github/workflows/contracts.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: contracts-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   forge:
+    name: forge build + test
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -26,13 +35,22 @@ jobs:
       - name: Show forge version
         run: forge --version
 
+      # Install required libraries that remappings.txt expects.
+      # These are NOT submodules — we pull them at CI time so the repo
+      # stays small and we always get the latest tagged versions.
+      - name: Install forge-std
+        run: forge install foundry-rs/forge-std --no-commit --no-git
+
+      - name: Install openzeppelin-contracts
+        run: forge install OpenZeppelin/openzeppelin-contracts --no-commit --no-git
+
       - name: Build
         run: forge build --sizes
 
       - name: Test
         run: forge test -vvv
 
-      - name: Coverage
+      - name: Coverage summary
         run: forge coverage --report summary
         continue-on-error: true
 

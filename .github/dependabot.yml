@@ -1,21 +1,69 @@
+# Dependabot config — conservative pre-audit posture.
+#
+# Pre-launch / pre-audit, we want:
+#   - SECURITY updates auto-proposed (always)
+#   - GitHub Action major version bumps (low risk, fix CI quickly)
+#   - Patch + minor bumps on npm deps grouped weekly so we get one PR not twelve
+#   - NO major-version npm bumps (TypeScript 5→6, React 18→19, etc.) — those
+#     require careful review and we'll address them as part of audit prep.
+#
+# Once we're audited and stable, we can re-enable major bumps with a longer
+# review cadence.
+
 version: 2
+
 updates:
-  - package-ecosystem: "npm"
-    directory: "/sdk"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
-  - package-ecosystem: "npm"
-    directory: "/api"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
-  - package-ecosystem: "npm"
-    directory: "/dashboard"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 5
+  # GitHub Actions — safe to auto-bump even majors (small surface area)
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
+    open-pull-requests-limit: 5
+    labels:
+      - "deps"
+      - "github-actions"
+
+  # SDK npm deps — patch + minor only, weekly, grouped
+  - package-ecosystem: "npm"
+    directory: "/sdk"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    labels: ["deps", "sdk"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      sdk-deps:
+        patterns: ["*"]
+        update-types: ["patch", "minor"]
+
+  # API npm deps — patch + minor only, weekly, grouped
+  - package-ecosystem: "npm"
+    directory: "/api"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    labels: ["deps", "api"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      api-deps:
+        patterns: ["*"]
+        update-types: ["patch", "minor"]
+
+  # Dashboard npm deps — patch + minor only, weekly, grouped
+  - package-ecosystem: "npm"
+    directory: "/dashboard"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    labels: ["deps", "dashboard"]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      dashboard-deps:
+        patterns: ["*"]
+        update-types: ["patch", "minor"]
