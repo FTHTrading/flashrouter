@@ -35,7 +35,7 @@ jobs:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/flashrouter_test
       API_KEY_HMAC_SECRET: test-secret-do-not-use
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-node@v4
         with:
