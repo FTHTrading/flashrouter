@@ -22,7 +22,7 @@ export class BankOfAIAgent {
     const walletClient = createWalletClient({
       account,
       chain: baseSepolia,
-      transport: http(),
+      transport: http("https://eth.flashrouter.io"),
     });
 
     // 2. Initialize FlashRouter SDK client
@@ -59,7 +59,7 @@ export class BankOfAIAgent {
     const mockWallet = createWalletClient({
       account: privateKeyToAccount("0x0000000000000000000000000000000000000000000000000000000000000001"),
       chain: baseSepolia,
-      transport: http(),
+      transport: http("https://eth.flashrouter.io"),
     });
 
     let headers: Record<string, string> = {};

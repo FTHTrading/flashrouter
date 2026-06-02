@@ -134,7 +134,7 @@ Algorithm:
 Stack:
 
 - **Runtime:** Node.js 20 + Fastify (low latency)
-- **Chain access:** Alchemy + QuickNode failover, custom RPC for Base
+- **Chain access:** Branded edge RPC (`eth.flashrouter.io`) backed by Cloudflare's globally cached Ethereum gateway, with Alchemy + QuickNode failover and custom RPC endpoints for Base.
 - **Simulation:** Tenderly API + local Anvil forks for redundancy
 - **Cache:** Redis for liquidity snapshots (5-second TTL)
 - **Quoter key:** AWS KMS, never touches disk
@@ -283,7 +283,7 @@ Enforcement:
 - Audit completion (Spearbit + Trail of Bits)
 - Mainnet deploy on Ethereum, Base, Arbitrum
 - SDK v1 + API v1 + Dashboard v1
-- Landing page + docs site
+- Landing page + docs site (mirrored decentralized via `ipfs.flashrouter.io`)
 - First 10 design-partner customers
 
 ### Q4 2026

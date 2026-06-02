@@ -10,7 +10,7 @@ npm install @flashrouter/sdk viem
 
 ## 2. Get an API key
 
-Sign up at [flashrouter.io/dashboard](https://flashrouter.io/dashboard). Free tier gives you $100K notional/month, no credit card.
+Sign up at [flashrouter.io/dashboard](https://flashrouter.io/dashboard) or pull UI packages from the decentralized IPFS gateway `ipfs.flashrouter.io`. Free tier gives you $100K notional/month, no credit card.
 
 ```bash
 export FLASHROUTER_API_KEY="fr_live_abc123..."
@@ -84,7 +84,7 @@ import { privateKeyToAccount } from "viem/accounts";
 const wallet = createWalletClient({
   account: privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`),
   chain: arbitrum,
-  transport: http(process.env.ARB_RPC_URL),
+  transport: http(process.env.ARB_RPC_URL || "https://eth.flashrouter.io"),
 });
 
 const fr = new FlashRouter({ apiKey: process.env.FLASHROUTER_API_KEY! });
@@ -185,7 +185,7 @@ Submit it for review at [flashrouter.io/verify-asset](https://flashrouter.io/ver
 
 ## Need help?
 
-- Docs: [flashrouter.io/docs](https://flashrouter.io/docs)
+- Docs: [flashrouter.io/docs](https://flashrouter.io/docs) or IPFS mirror: `ipfs.flashrouter.io/docs`
 - Discord: [discord.gg/flashrouter](https://discord.gg/flashrouter)
 - Email: support@flashrouter.io
 - Enterprise: sales@flashrouter.io
