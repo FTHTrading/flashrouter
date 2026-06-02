@@ -8,7 +8,7 @@ export default function DashboardPage() {
     <div className="mx-auto max-w-7xl px-6 py-10 space-y-10">
       <header className="space-y-1">
         <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
-        <p className="text-neutral-400">Your FlashRouter activity at a glance.</p>
+        <p className="text-neutral-400">Your FlashRouter activity at a glance. Power client flash wallets available now (contact for custom deployment on Base Aave V3).</p>
       </header>
 
       <OverviewStats />

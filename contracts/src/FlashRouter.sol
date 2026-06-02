@@ -18,6 +18,13 @@ interface IERC20 {
 ///         pause-able, upgradeable via UUPS.
 /// @author FlashRouter
 /// @custom:security-contact security@flashrouter.io
+///
+/// POWER CLIENTS: For immediate closed access, use per-client FlashWallet* receivers
+/// (see contracts/src/power-clients/). These are isolated Aave V3 Base (or other)
+/// flash loan contracts deployed for qualified clients. Client writes their
+/// executeOperation strategy. We deploy/close. Full router integration later.
+/// See power-clients/README.md for details and minimums.
+/// Example: AerodromeArb.sol shows real swap logic for USDC-WETH arb on Base.
 contract FlashRouter is IFlashRouter {
     // ─────────────────────────────────────────────────────────────────────
     //                              CONSTANTS

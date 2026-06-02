@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documentation — FlashRouter</title>
+<meta name="description" content="FlashRouter technical documentation: architecture, integration, compliance, deployment." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M6 8h6l8 8-8 8H6l8-8z' fill='%2300d4ff'/%3E%3Cpath d='M16 8h6l8 8-8 8h-6l8-8z' fill='%2300d4ff' opacity='.5'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+.docs-wrap { max-width: 720px; margin: 0 auto; padding: 6rem 1.5rem 4rem; }
+.docs-wrap h1 { font-size: 2rem; margin-bottom: .5rem; }
+.docs-wrap .lead { color: var(--muted, #8b94a3); margin-bottom: 2rem; line-height: 1.6; }
+.doc-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
+.doc-list a {
+  display: block; padding: 1.25rem 1.5rem; border: 1px solid rgba(125,134,144,.25);
+  border-radius: 10px; text-decoration: none; color: inherit; transition: border-color .15s;
+}
+.doc-list a:hover { border-color: #00d4ff; }
+.doc-list h2 { font-size: 1.05rem; margin: 0 0 .35rem; color: #e8ecf1; }
+.doc-list p { margin: 0; font-size: .92rem; color: #8b94a3; line-height: 1.5; }
+.back { display: inline-flex; align-items: center; gap: .4rem; color: #00d4ff; text-decoration: none; margin-bottom: 2rem; font-size: .9rem; }
+.note { margin-top: 2.5rem; padding: 1rem 1.25rem; border: 1px dashed rgba(212,255,0,.3); border-radius: 8px; font-size: .88rem; color: #8b94a3; line-height: 1.55; }
+</style>
+</head>
+<body>
+<div class="troptions-top"><a href="https://troptions.com" target="_blank" rel="noopener"><span class="troptions-mark" aria-hidden="true"></span><span class="tp-muted">Powered by</span><span class="tp-brand">Troptions</span></a></div>
+
+<main class="docs-wrap">
+  <a href="/" class="back">← Back to flashrouter.io</a>
+  <h1>Documentation</h1>
+  <p class="lead">Technical docs for the FlashRouter monorepo. Source of truth is GitHub; this hub links to the canonical markdown files in <code>FTHTrading/flashrouter</code>.</p>
+
+  <ul class="doc-list">
+    <li>
+      <a href="https://github.com/FTHTrading/flashrouter/blob/main/docs/ARCHITECTURE.md">
+        <h2>Architecture</h2>
+        <p>Five-layer system design, contract model, security model, observability.</p>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/FTHTrading/flashrouter/blob/main/docs/INTEGRATION.md">
+        <h2>Integration</h2>
+        <p>Ship your first flash loan in 10 minutes — SDK, API, and strategy patterns.</p>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/FTHTrading/flashrouter/blob/main/docs/COMPLIANCE.md">
+        <h2>Compliance</h2>
+        <p>Anti-fraud posture, verified assets, KYB, and regulatory boundaries.</p>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/FTHTrading/flashrouter/blob/main/docs/DEPLOYMENT.md">
+        <h2>Deployment</h2>
+        <p>Testnet and mainnet rollout, audit gates, infra, and ops checklist.</p>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/FTHTrading/flashrouter/blob/main/contracts/src/power-clients/README.md">
+        <h2>Power Client Flash Wallets — Live Tonight</h2>
+        <p>You write the alpha. We set up the wallet and close the deal. 6+ templates including exact FlashWallet.sol + BasicArb (USDC Aerodrome cycle). Min $25k or 20%.</p>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/FTHTrading/flashrouter/blob/main/contracts/src/railgun/RAILGUN_INTEGRATION.md">
+        <h2>Railgun Shielded Flash Loans (ZK Privacy — Start Here)</h2>
+        <p>Easiest/fastest private alpha path (1-2 weeks). Exact flow, contracts map, complications, RailgunFlashAdapter.sol stub + TS prover. Recommended first before Noir/custom circuits.</p>
+      </a>
+    </li>
+    <li>
+      <a href="#xrp-evidence">
+        <h2>Treasury Evidence — XRP $1.2617 Tx 8E263217...</h2>
+        <p>20 XRP ≈ $29.42 Payment sample (ALLHEART → tag 1001, ledger 104159942, 5/11/2026). PoF / funding evidence for EMD, escrow, power client capital, troptions-escrow-pof + DealSPV ZK.</p>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/FTHTrading/flashrouter/blob/main/VERIFICATION.md">
+        <h2>Verification &amp; due diligence</h2>
+        <p>Contract addresses, audit status, milestones — every claim with evidence.</p>
+      </a>
+    </li>
+    <li>
+      <a href="https://github.com/FTHTrading/flashrouter#readme">
+        <h2>README &amp; quick start</h2>
+        <p>Monorepo overview, supported lenders, repository layout.</p>
+      </a>
+    </li>
+  </ul>
+
+  <p class="note"><strong>Power clients live now (no waiting):</strong> Custom isolated Flash Wallets (Aave V3 Base) — exact FlashWallet.sol + BasicArb (USDC Aerodrome) + 5 other templates ready to close tonight. You write alpha in executeOperation, we deploy/close. Min $25k or 20%. <strong>Railgun ZK privacy flow (easiest) fully mapped + stubs in flash-system/RAILGUN_INTEGRATION.md + railgun/.</strong> Deals SPV with 4 legacy-vault ZK proofs (DocumentHash/GuardianQuorum/FiveProofRelease/UnityLegacy5) + best deals (Zoniqx/RealT/Lofty + current McKinzey 1.91ac $2.298M). XRP $1.2617 tx 8E263217... (20 XRP $29.42 ALLHEART→tag1001 ledger 104159942) as treasury/PoF evidence. 
+<strong>Full AI Agent MCP System:</strong> New <code>orchestrate_full_client_route</code> tool + master <code>scripts/master-power-client-close.ps1</code> (chains XRP verify + deals + preflight + closer with injection + Railgun/ZK notes). 7+ tools at /mcp (manifest) + /mcp/invoke. Full written route + mermaid diagrams + automated procedures in <code>docs/FULL-POWER-CLIENT-ROUTE.md</code>. See main site #flash-system #zk-privacy #xrp-evidence. Integrate to fth-mcp-hub 9077.</p>
+</main>
+
+<div class="troptions-powered"><a href="https://troptions.com" target="_blank" rel="noopener"><span class="troptions-mark" aria-hidden="true"></span><span class="tp-muted">Powered by</span><span class="tp-brand">Troptions</span></a></div>
+</body>
+</html>

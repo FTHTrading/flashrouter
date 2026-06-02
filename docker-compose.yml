@@ -41,7 +41,7 @@ services:
       REDIS_URL: redis://redis:6379
       PORT: 8080
       HOST: 0.0.0.0
-      NODE_ENV: development
+      NODE_ENV: production
       API_KEY_HMAC_SECRET: dev-only-secret-do-not-use
     ports:
       - "8080:8080"

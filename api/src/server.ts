@@ -31,6 +31,7 @@ import { executeRoutes } from "./routes/execute";
 import { loansRoutes } from "./routes/loans";
 import { providersRoutes } from "./routes/providers";
 import { usageRoutes } from "./routes/usage";
+import { FLASH_MCP_TOOLS, invokeFlashMCPTool } from "./mcp";
 
 const PORT = Number(process.env.PORT ?? 8080);
 const HOST = process.env.HOST ?? "0.0.0.0";
@@ -68,7 +69,7 @@ async function buildServer() {
       info: {
         title: "FlashRouter API",
         description:
-          "Unified flash-loan infrastructure — Aave V3, Balancer V2, Uniswap V3, Maker DSS-Flash across 6 EVM chains.",
+          "Unified flash-loan infrastructure — Aave V3, Balancer V2, Uniswap V3, Maker DSS-Flash across 6 EVM chains. Power client flash wallets (custom isolated receivers) live now on Base (Aave V3) for qualified clients. You write the strategy, we deploy.",
         version: "1.0.0",
         contact: {
           name: "FlashRouter Support",
@@ -103,6 +104,15 @@ async function buildServer() {
   await app.register(loansRoutes, { prefix: "/v1" });
   await app.register(providersRoutes, { prefix: "/v1" });
   await app.register(usageRoutes, { prefix: "/v1" });
+
+  // MCP agentic internal tools (for fth-mcp-hub + direct). Public discovery for now (prod: gate behind auth or CF).
+  app.get("/mcp", async () => ({ tools: FLASH_MCP_TOOLS, count: FLASH_MCP_TOOLS.length, note: "FlashRouter power client + ZK + deals + XRP tools. Invoke via POST /mcp/invoke. Integrate with hub at 9077." }));
+  app.post("/mcp/invoke", async (req, reply) => {
+    const { tool, input } = (req.body as any) || {};
+    if (!tool) return reply.code(400).send({ error: "tool required" });
+    const result = await invokeFlashMCPTool(tool, input || {});
+    return result;
+  });
 
   // Public health check
   app.get("/v1/health", async () => ({

@@ -45,7 +45,7 @@ export class FlashRouter {
   constructor(config: FlashRouterConfig) {
     if (!config.apiKey || !config.apiKey.startsWith("fr_")) {
       throw new FlashRouterError(
-        "Invalid API key. Get one at https://flashrouter.io/dashboard",
+        "Invalid API key. Get one at https://flashrouter.io (power clients: contact for custom flash wallet onboarding)",
         "INVALID_API_KEY",
       );
     }

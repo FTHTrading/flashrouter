@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "flashrouter-api-stub",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-05-01",
+  "account_id": "07bcc4a189ef176261b818409c95891f",
+  "workers_dev": true,
+  "vars": {
+    "ENVIRONMENT": "staging"
+  },
+  "routes": [
+    { "pattern": "api-staging.flashrouter.io/*", "zone_name": "flashrouter.io" },
+    { "pattern": "api.flashrouter.io/*", "zone_name": "flashrouter.io" }
+  ]
+}

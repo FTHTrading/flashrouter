@@ -22,8 +22,10 @@
  */
 
 export { FlashRouter } from "./client";
-export { ChainName, Provider, AssetSymbol } from "./types";
+export { Provider } from "./types";
 export type {
+  ChainName,
+  AssetSymbol,
   FlashRouterConfig,
   FlashLoanParams,
   FlashLoanResult,
