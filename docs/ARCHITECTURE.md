@@ -134,7 +134,7 @@ Algorithm:
 Stack:
 
 - **Runtime:** Node.js 20 + Fastify (low latency)
-- **Chain access:** Branded edge RPC (`eth.flashrouter.io`) backed by Cloudflare's globally cached Ethereum gateway, with Alchemy + QuickNode failover and custom RPC endpoints for Base.
+- **Chain access:** Branded edge RPC (`eth.flashrouter.io`) utilizing a namespaced routing structure (e.g. `https://eth.flashrouter.io/v1/:chain`) to redirect requests to optimal target RPC nodes. Built-in compliance checks at the edge proxy automatically parse JSON-RPC payloads (e.g., `eth_call`, `eth_sendRawTransaction`) and reject any transactions containing sanctioned Tornado Cash addresses or exploit contracts.
 - **Simulation:** Tenderly API + local Anvil forks for redundancy
 - **Cache:** Redis for liquidity snapshots (5-second TTL)
 - **Quoter key:** AWS KMS, never touches disk

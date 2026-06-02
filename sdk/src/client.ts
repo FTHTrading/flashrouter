@@ -241,9 +241,10 @@ export class FlashRouter {
     const existing = this.rpcClients.get(chain);
     if (existing) return existing;
 
-    // Lazy default. Production users should pass their own clients with API keys.
+    // Default to the branded, secure RPC gateway namespaced endpoint
+    const rpcUrl = `https://eth.flashrouter.io/v1/${chain}`;
     const created = createPublicClient({
-      transport: http(),
+      transport: http(rpcUrl),
     });
     this.rpcClients.set(chain, created);
     return created;

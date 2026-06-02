@@ -84,7 +84,7 @@ import { privateKeyToAccount } from "viem/accounts";
 const wallet = createWalletClient({
   account: privateKeyToAccount(process.env.PRIVATE_KEY as `0x${string}`),
   chain: arbitrum,
-  transport: http(process.env.ARB_RPC_URL || "https://eth.flashrouter.io"),
+  transport: http(process.env.ARB_RPC_URL || "https://eth.flashrouter.io/v1/arbitrum"),
 });
 
 const fr = new FlashRouter({ apiKey: process.env.FLASHROUTER_API_KEY! });
