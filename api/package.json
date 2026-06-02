@@ -22,7 +22,8 @@
     "pino": "^9.0.0",
     "stripe": "^15.0.0",
     "viem": "^2.21.0",
-    "zod": "^3.23.0"
+    "zod": "^3.23.0",
+    "@flashrouter/sdk": "*"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

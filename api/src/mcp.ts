@@ -64,6 +64,15 @@ export const FLASH_MCP_TOOLS: MCPTool[] = [
       network: "baseSepolia | base", 
       deploy: "boolean (false for package only; true requires human approval)"
     }
+  },
+  {
+    name: "execute_autonomous_agent_flash",
+    description: "Bank of AI agent execution: runs an autonomous flash loan, requests and pays the x402 routing fee in USDT/USDC, compiles ZK proof witness, and executes the FlashRouter loan.",
+    inputSchema: {
+      asset: "string (e.g. USDC)",
+      amount: "string (e.g. 10000000)",
+      strategyAddress: "string (0x...)"
+    }
   }
 ];
 
@@ -216,6 +225,39 @@ export async function invokeFlashMCPTool(tool: string, input: any): Promise<any>
         };
       } catch (e: any) {
         return { ok: false, tool, ts, error: e.message, note: "Run master script or closer directly for details. Preflights must pass." };
+      }
+    }
+    case "execute_autonomous_agent_flash": {
+      const { asset = "USDC", amount = "10000000", strategyAddress = "0x7d9a65d06dcc435a52D5880C6310Bd6E96c156DB" } = input;
+      try {
+        const { BankOfAIAgent } = await import("@flashrouter/sdk");
+        const agent = new BankOfAIAgent({
+          apiKey: "fr_test_key_123"
+        });
+        
+        let logs: string[] = [];
+        const originalLog = console.log;
+        console.log = (...args: any[]) => {
+          logs.push(args.join(" "));
+          originalLog(...args);
+        };
+        
+        await agent.executeOpportunity({
+          asset,
+          amount,
+          strategyAddress
+        });
+        
+        console.log = originalLog;
+        
+        return {
+          ok: true, tool, ts,
+          logs,
+          status: "SUCCESS",
+          note: "Autonomous flash loan executed with x402 payment and ZK proofs verified."
+        };
+      } catch (e: any) {
+        return { ok: false, tool, ts, error: e.message };
       }
     }
     default:

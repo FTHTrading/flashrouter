@@ -35,3 +35,11 @@ export type {
 } from "./types";
 export { CHAINS, PROVIDERS, VERIFIED_ASSETS } from "./constants";
 export { FlashRouterError, AssetNotVerifiedError, QuoteExpiredError } from "./errors";
+
+// Bank of AI Agent & TronPay/x402 Integrations
+export { BankOfAIAgent } from "./agent/agent";
+export { TronPayClient } from "./agent/tronpay";
+export { X402Handler } from "./agent/x402-handler";
+export type { TronTransaction } from "./agent/tronpay";
+export type { X402Invoice, X402Receipt } from "./agent/x402-handler";
+
