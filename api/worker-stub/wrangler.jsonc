@@ -12,6 +12,8 @@
     { "pattern": "api-staging.flashrouter.io/*", "zone_name": "flashrouter.io" },
     { "pattern": "api.flashrouter.io/*", "zone_name": "flashrouter.io" },
     { "pattern": "eth.flashrouter.io/*", "zone_name": "flashrouter.io" },
-    { "pattern": "ipfs.flashrouter.io/*", "zone_name": "flashrouter.io" }
+    { "pattern": "ipfs.flashrouter.io/*", "zone_name": "flashrouter.io" },
+    { "pattern": "sol.flashrouter.io/*", "zone_name": "flashrouter.io" },
+    { "pattern": "helius.flashrouter.io/*", "zone_name": "flashrouter.io" }
   ]
 }

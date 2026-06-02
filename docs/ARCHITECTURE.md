@@ -134,7 +134,9 @@ Algorithm:
 Stack:
 
 - **Runtime:** Node.js 20 + Fastify (low latency)
-- **Chain access:** Branded edge RPC (`eth.flashrouter.io`) utilizing a namespaced routing structure (e.g. `https://eth.flashrouter.io/v1/:chain`) to redirect requests to optimal target RPC nodes. Built-in compliance checks at the edge proxy automatically parse JSON-RPC payloads (e.g., `eth_call`, `eth_sendRawTransaction`) and reject any transactions containing sanctioned Tornado Cash addresses or exploit contracts.
+- **Chain access:** Branded secure edge RPC gateways providing high-performance node access and edge-level compliance screening:
+  - **EVM Chains:** Gateway at `eth.flashrouter.io` utilizing namespaced path routing (e.g. `https://eth.flashrouter.io/v1/:chain`) pointing to optimized RPC nodes (Ethereum, Base, Arbitrum, Optimism, Polygon, and Base Sepolia). Checks payload for sanctioned Tornado Cash and exploit contracts.
+  - **Solana Chain:** Gateway at `sol.flashrouter.io` and `helius.flashrouter.io` proxying requests to Helius (`https://mainnet.helius-rpc.com` and `https://devnet.helius-rpc.com/v1/devnet`) while securely masking the client-side Helius API key. Checks payload for mock Solana sanctioned addresses (`2sV8D3678bBfD46D98C156DB`, `7vD9a65d06dcc435a52D5880C6310Bd6E96c156DB`) and exploit wallets, blocking them with a `403 Forbidden` JSON-RPC response.
 - **Simulation:** Tenderly API + local Anvil forks for redundancy
 - **Cache:** Redis for liquidity snapshots (5-second TTL)
 - **Quoter key:** AWS KMS, never touches disk

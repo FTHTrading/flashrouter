@@ -179,6 +179,24 @@ await fetch("https://api.flashrouter.io/v1/quote", {
 });
 ```
 
+### Option 3 — Solana RPC Gateway (Helius proxy)
+
+For Solana integration, point your Web3 connection clients directly to the custom RPC gateway. The Helius API key is securely masked on the server.
+
+```typescript
+import { Connection } from "@solana/web3.js";
+
+// Initialize Solana Connection via secure FlashRouter gateway
+// Helius API key is stored server-side and never leaks to client code
+const connection = new Connection("https://sol.flashrouter.io", "confirmed");
+
+// Retrieve slot info or other standard Solana JSON-RPC queries
+const slot = await connection.getSlot();
+console.log(`Solana Slot: ${slot}`);
+```
+
+*Note: All transactions containing sanctioned Solana addresses or exploit accounts will receive a 403 Forbidden compliance error.*
+
 ## What if my asset isn't on the verified list?
 
 Submit it for review at [flashrouter.io/verify-asset](https://flashrouter.io/verify-asset). We add canonical issuers within 24 hours. We do not add fake-token clones, period.

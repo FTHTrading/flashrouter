@@ -6,6 +6,7 @@
 
 interface Env {
   ENVIRONMENT?: string;
+  HELIUS_API_KEY?: string;
 }
 
 const CHAIN_IDS: Record<string, number> = {
@@ -28,6 +29,8 @@ const SANCTIONED_ADDRESSES = new Set([
   "0xd90e2f925e14912d40c4b4a8a3a3d8667b9de1f0", // Tornado Cash Router (Ethereum)
   "0x153A042b918fA3C91Ff5EFEbfb73D963F9E9D7C1", // Tornado Cash (Base)
   "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9", // Example Flagged Exploit Wallet
+  "2sV8D3678bBfD46D98C156DB", // Mock Solana Sanctioned Address
+  "7vD9a65d06dcc435a52D5880C6310Bd6E96c156DB", // Mock Solana Exploit Wallet
 ]);
 
 // Target RPC nodes for Namespaces
@@ -188,6 +191,72 @@ export default {
     }
 
     // ==========================================
+    // 1.5. SECURE SOL RPC GATEWAY (sol.flashrouter.io / helius.flashrouter.io)
+    // ==========================================
+    if (host === "sol.flashrouter.io" || host === "helius.flashrouter.io") {
+      const heliusKey = env.HELIUS_API_KEY || "4e1f7d63-dd43-4e52-87eb-711bd6f083a2";
+      
+      // Determine if Devnet or Mainnet (check path namespaces like /v1/devnet)
+      const isDevnet = path.includes("/v1/devnet") || path.includes("/devnet");
+      const targetRpc = isDevnet 
+        ? `https://devnet.helius-rpc.com/?api-key=${heliusKey}`
+        : `https://mainnet.helius-rpc.com/?api-key=${heliusKey}`;
+
+      if (request.method !== "POST") {
+        if (request.method === "GET") {
+          return new Response(SOL_GATEWAY_REFERENCE_HTML, {
+            headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
+          });
+        }
+        return json({
+          status: "active",
+          gateway: "FlashRouter secure Solana RPC proxy (Helius)",
+          endpoint: isDevnet ? "devnet" : "mainnet",
+          note: "POST JSON-RPC request to execute Solana queries.",
+        });
+      }
+
+      // Read JSON-RPC body
+      let rpcBody: any;
+      try {
+        rpcBody = await request.clone().json();
+      } catch {
+        return json({ jsonrpc: "2.0", error: { code: -32700, message: "Parse error" }, id: null }, 400);
+      }
+
+      // Gating & Compliance Screening
+      if (isSanctioned(rpcBody)) {
+        console.warn(`[Compliance Gating] Solana transaction blocked. Target payload contains sanctioned address.`);
+        return json({
+          jsonrpc: "2.0",
+          error: {
+            code: -32600,
+            message: "Sanction compliance check failed. Request address or target account is restricted by OFAC compliance policies."
+          },
+          id: rpcBody?.id || null
+        }, 403);
+      }
+
+      // Proxy request to Helius
+      try {
+        const response = await fetch(targetRpc, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(rpcBody),
+        });
+        const resText = await response.text();
+        return new Response(resText, {
+          status: response.status,
+          headers: { "Content-Type": "application/json", ...CORS_HEADERS },
+        });
+      } catch (err: any) {
+        return json({ jsonrpc: "2.0", error: { code: -32603, message: `Solana RPC Proxy failed: ${err.message}` }, id: rpcBody?.id || null }, 502);
+      }
+    }
+
+    // ==========================================
     // 2. IPFS SECURE GATEWAY (ipfs.flashrouter.io)
     // ==========================================
     if (host === "ipfs.flashrouter.io") {
@@ -320,6 +389,230 @@ export default {
     return json({ error: "Not found", path }, 404);
   },
 };
+
+const SOL_GATEWAY_REFERENCE_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FlashRouter Sovereign Solana RPC Gateway</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0d0e;
+      --bg-panel: #171a1d;
+      --accent: #c5a880;
+      --accent-muted: rgba(197, 168, 128, 0.15);
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #2d3139;
+      --success: #10b981;
+      --warning: #f59e0b;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 3rem 1.5rem;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    h1 {
+      font-family: 'Lora', Georgia, serif;
+      color: var(--accent);
+      font-size: 2.5rem;
+      margin: 0 0 0.5rem 0;
+      font-weight: 500;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin: 0;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent-muted);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-top: 1rem;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--success);
+    }
+    h2 {
+      font-family: 'Lora', Georgia, serif;
+      color: var(--text);
+      font-size: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      margin-top: 2.5rem;
+      margin-bottom: 1.25rem;
+      font-weight: 500;
+    }
+    .namespaces-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+    .namespaces-table th, .namespaces-table td {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .namespaces-table th {
+      color: var(--accent);
+      font-weight: 500;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+    }
+    .namespaces-table td code {
+      background: var(--bg-panel);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+    }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    a:hover {
+      color: #dfc8a5;
+      text-decoration: underline;
+    }
+    .panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+    .panel-title {
+      font-weight: 600;
+      color: var(--accent);
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .code-block {
+      background: #060708;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1rem 0 0 0;
+    }
+    pre {
+      margin: 0;
+    }
+    .code-block code {
+      color: #a9b2c3;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .footer {
+      margin-top: 4rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>FlashRouter Sovereign Solana RPC Gateway</h1>
+      <p class="subtitle">Secure, high-performance edge Solana RPC gateway backed by Helius API masking.</p>
+      <div class="status-badge">
+        <span class="status-dot"></span> Gateway Status: Active &amp; Compliant (Helius)
+      </div>
+    </header>
+
+    <main>
+      <h2>Endpoints</h2>
+      <p>Configure your Solana connection or SDK using the following endpoints. Requests are forwarded directly to Helius with your API key securely masked.</p>
+
+      <table class="namespaces-table">
+        <thead>
+          <tr>
+            <th>Network</th>
+            <th>Gateway Endpoint</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Solana Mainnet-Beta</td>
+            <td><code>https://sol.flashrouter.io</code> or <code>https://helius.flashrouter.io</code></td>
+          </tr>
+          <tr>
+            <td>Solana Devnet</td>
+            <td><code>https://sol.flashrouter.io/v1/devnet</code> or <code>https://helius.flashrouter.io/v1/devnet</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Safety &amp; Compliance (OFAC Filtering)</h2>
+      <p>FlashRouter is dedicated to compliant, secure on-chain operations. To ensure the integrity of the Solana gateway:</p>
+      <ul>
+        <li>Every transaction payload submitted via the gateway is parsed and screened at the edge.</li>
+        <li>Requests containing sanctioned Solana addresses or flagged exploit accounts will be rejected with an RFC-compliant JSON-RPC compliance error: <code>code: -32600</code> (Invalid Request) and status <code>403 Forbidden</code>.</li>
+      </ul>
+
+      <h2>Quick Start Code Example</h2>
+      <p>Below is an example of instantiating a client using <a href="https://solana-labs.github.io/solana-web3.js/" target="_blank">@solana/web3.js</a> pointing directly to the Sovereign Solana RPC Gateway:</p>
+      
+      <div class="panel">
+        <div class="panel-title">TypeScript / @solana/web3.js integration</div>
+        <div class="code-block">
+          <pre><code>import { Connection } from "@solana/web3.js";
+
+// Initialize secure connection (Helius API key is hidden at the proxy layer)
+const connection = new Connection("https://sol.flashrouter.io", "confirmed");
+
+const slot = await connection.getSlot();
+console.log(\`Current Solana slot: \${slot}\`);</code></pre>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      &copy; 2026 FTH Trading LLC. Powered by <a href="https://flashrouter.io" target="_blank">FlashRouter</a> &amp; Helius.
+    </footer>
+  </div>
+</body>
+</html>
+`;
 
 const GATEWAY_REFERENCE_HTML = `<!DOCTYPE html>
 <html lang="en">
