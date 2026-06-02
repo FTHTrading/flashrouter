@@ -1,5 +1,11 @@
 export class FlashRouterError extends Error {
-  constructor(message: string, public readonly code: string, public readonly cause?: unknown) {
+  constructor(
+    message: string,
+    public readonly code: string,
+    public readonly cause?: unknown,
+    public readonly status?: number,
+    public readonly headers?: Record<string, string>
+  ) {
     super(message);
     this.name = "FlashRouterError";
   }

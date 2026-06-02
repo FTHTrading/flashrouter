@@ -4,6 +4,7 @@ async function run() {
   console.log("[Test] Initializing Bank of AI Agent...");
   const agent = new BankOfAIAgent({
     apiKey: "fr_test_key_123",
+    apiUrl: "http://localhost:8080",
   });
 
   console.log("[Test] Running agent opportunity execution...");

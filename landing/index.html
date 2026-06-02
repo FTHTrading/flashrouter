@@ -34,7 +34,7 @@
       <a href="#mapped-routes">Mapped Routes</a>
       <a href="#how">How it works</a>
       <a href="#ecosystem">Ecosystem</a>
-      <a href="#pricing">Pricing</a>
+      <a href="#agentic-mcp">Agentic AI</a>
       <a href="#security">Security</a>
     </nav>
     <div class="nav-actions">
@@ -51,7 +51,7 @@
     <a href="#mapped-routes">Mapped Routes</a>
     <a href="#how">How it works</a>
     <a href="#ecosystem">Ecosystem</a>
-    <a href="#pricing">Pricing</a>
+    <a href="#agentic-mcp">Agentic AI</a>
     <a href="#security">Security</a>
     <a href="/docs/" class="btn btn-secondary">Read Docs</a>
     <button id="connectWalletBtnMobile" class="btn btn-primary" style="width:100%;">Connect Wallet</button>
@@ -294,43 +294,85 @@
     <div class="diagram-wrap reveal">
       <svg class="diagram" viewBox="0 0 980 300" role="img" aria-label="FlashRouter routing flow diagram">
         <defs>
-          <marker id="arrow" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="#4a90e2"/></marker>
-          <marker id="arrowDim" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="#2f435e"/></marker>
+          <marker id="arrow" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="var(--accent)"/></marker>
+          <marker id="arrowGold" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="var(--gold)"/></marker>
+          <marker id="arrowDim" markerWidth="9" markerHeight="9" refX="6" refY="4.5" orient="auto"><path d="M0 0 L8 4.5 L0 9 z" fill="var(--border-2)"/></marker>
+          
+          <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.25"/>
+            <stop offset="50%" stop-color="var(--gold2)" stop-opacity="1"/>
+            <stop offset="100%" stop-color="var(--gold)" stop-opacity="0.25"/>
+          </linearGradient>
+          <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.25"/>
+            <stop offset="50%" stop-color="#7eb5f8" stop-opacity="1"/>
+            <stop offset="100%" stop-color="var(--accent)" stop-opacity="0.25"/>
+          </linearGradient>
+          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
         </defs>
-        <!-- User -->
-        <rect x="10" y="120" width="120" height="60" rx="4" fill="#111c2e" stroke="#1e2d42"/>
+
+        <!-- Base Connections (dim static lines) -->
+        <g stroke="var(--border)" stroke-width="1.5" fill="none">
+          <path d="M 130 150 L 200 150" />
+          <path d="M 355 130 L 470 60" />
+          <path d="M 355 145 L 470 115" />
+          <path d="M 355 155 L 470 185" />
+          <path d="M 355 170 L 470 240" />
+          
+          <path d="M 595 61 L 700 150" />
+          <path d="M 595 117 L 700 150" />
+          <path d="M 595 185 L 700 150" />
+          <path d="M 595 241 L 700 150" />
+          
+          <path d="M 825 150 L 895 150" />
+        </g>
+
+        <!-- Energy Wires (animated overlay paths) -->
+        <g stroke-linecap="round" fill="none" stroke-width="2.5">
+          <path id="wire-strategy-router" d="M 130 150 L 200 150" class="energy-wire flow-blue flow-active" marker-end="url(#arrow)" />
+          
+          <path id="wire-router-aave" d="M 355 130 L 470 60" class="energy-wire" />
+          <path id="wire-router-balancer" d="M 355 145 L 470 115" class="energy-wire" />
+          <path id="wire-router-uniswap" d="M 355 155 L 470 185" class="energy-wire flow-blue flow-active" marker-end="url(#arrow)" />
+          <path id="wire-router-maker" d="M 355 170 L 470 240" class="energy-wire" />
+          
+          <path id="wire-aave-execute" d="M 595 60 L 700 150" class="energy-wire" />
+          <path id="wire-balancer-execute" d="M 595 117 L 700 150" class="energy-wire" />
+          <path id="wire-uniswap-execute" d="M 595 185 L 700 150" class="energy-wire flow-blue flow-active" marker-end="url(#arrow)" />
+          <path id="wire-maker-execute" d="M 595 241 L 700 150" class="energy-wire" />
+          
+          <path id="wire-execute-settle" d="M 825 150 L 895 150" class="energy-wire flow-blue flow-active" marker-end="url(#arrow)" />
+        </g>
+
+        <!-- User Node -->
+        <rect x="10" y="120" width="120" height="60" rx="4" fill="#111c2e" stroke="#1e2d42" id="node-strategy"/>
         <text x="70" y="146" text-anchor="middle" fill="#f3f4f6" font-family="Inter,sans-serif" font-size="14" font-weight="600">Your Strategy</text>
         <text x="70" y="164" text-anchor="middle" fill="#9ca3af" font-family="JetBrains Mono,monospace" font-size="10">fr.borrow()</text>
-        <line x1="130" y1="150" x2="200" y2="150" stroke="#4a90e2" stroke-width="2" marker-end="url(#arrow)"/>
 
-        <!-- Router -->
-        <rect x="205" y="105" width="150" height="90" rx="4" fill="#0a1628" stroke="#4a90e2"/>
+        <!-- Router Node -->
+        <rect x="205" y="105" width="150" height="90" rx="4" fill="#0a1628" stroke="#4a90e2" id="node-router"/>
         <text x="280" y="138" text-anchor="middle" fill="#4a90e2" font-family="Inter,sans-serif" font-size="14" font-weight="700">Smart Router</text>
         <text x="280" y="158" text-anchor="middle" fill="#9ca3af" font-family="JetBrains Mono,monospace" font-size="9.5">quote · rank · route</text>
         <text x="280" y="174" text-anchor="middle" fill="#6b7280" font-family="JetBrains Mono,monospace" font-size="9">best fee selected</text>
 
-        <!-- fan out to providers -->
-        <line x1="355" y1="130" x2="470" y2="60"  stroke="#2f435e" stroke-width="1.5" marker-end="url(#arrowDim)"/>
-        <line x1="355" y1="145" x2="470" y2="115" stroke="#2f435e" stroke-width="1.5" marker-end="url(#arrowDim)"/>
-        <line x1="355" y1="155" x2="470" y2="185" stroke="#4a90e2" stroke-width="2"   marker-end="url(#arrow)"/>
-        <line x1="355" y1="170" x2="470" y2="240" stroke="#2f435e" stroke-width="1.5" marker-end="url(#arrowDim)"/>
-
-        <!-- providers -->
+        <!-- Providers Nodes -->
         <g font-family="Inter,sans-serif" font-size="12" font-weight="600">
-          <rect x="475" y="42"  width="120" height="38" rx="4" fill="#111c2e" stroke="#1e2d42"/><text x="535" y="66" text-anchor="middle" fill="#9ca3af">Aave V3</text>
-          <rect x="475" y="98"  width="120" height="38" rx="4" fill="#111c2e" stroke="#1e2d42"/><text x="535" y="122" text-anchor="middle" fill="#9ca3af">Balancer V2</text>
-          <rect x="475" y="166" width="120" height="38" rx="4" fill="#0a1628" stroke="#4a90e2"/><text x="535" y="190" text-anchor="middle" fill="#f3f4f6">Uniswap V3</text>
-          <rect x="475" y="222" width="120" height="38" rx="4" fill="#111c2e" stroke="#1e2d42"/><text x="535" y="246" text-anchor="middle" fill="#9ca3af">Maker DSS</text>
+          <rect x="475" y="42"  width="120" height="38" rx="4" fill="#111c2e" stroke="#1e2d42" id="node-aave"/><text x="535" y="66" text-anchor="middle" fill="#9ca3af">Aave V3</text>
+          <rect x="475" y="98"  width="120" height="38" rx="4" fill="#111c2e" stroke="#1e2d42" id="node-balancer"/><text x="535" y="122" text-anchor="middle" fill="#9ca3af">Balancer V2</text>
+          <rect x="475" y="166" width="120" height="38" rx="4" fill="#0a1628" stroke="#4a90e2" id="node-uniswap"/><text x="535" y="190" text-anchor="middle" fill="#f3f4f6">Uniswap V3</text>
+          <rect x="475" y="222" width="120" height="38" rx="4" fill="#111c2e" stroke="#1e2d42" id="node-maker"/><text x="535" y="246" text-anchor="middle" fill="#9ca3af">Maker DSS</text>
         </g>
 
-        <!-- selected route to execute -->
-        <line x1="595" y1="185" x2="700" y2="150" stroke="#4a90e2" stroke-width="2" marker-end="url(#arrow)"/>
-        <rect x="705" y="120" width="120" height="60" rx="4" fill="#111c2e" stroke="#1e2d42"/>
+        <!-- Execute Node -->
+        <rect x="705" y="120" width="120" height="60" rx="4" fill="#111c2e" stroke="#1e2d42" id="node-execute"/>
         <text x="765" y="146" text-anchor="middle" fill="#f3f4f6" font-family="Inter,sans-serif" font-size="13" font-weight="600">Execute</text>
         <text x="765" y="164" text-anchor="middle" fill="#9ca3af" font-family="JetBrains Mono,monospace" font-size="10">your callback</text>
 
-        <line x1="825" y1="150" x2="895" y2="150" stroke="#4a90e2" stroke-width="2" marker-end="url(#arrow)"/>
-        <rect x="900" y="120" width="72" height="60" rx="4" fill="#0a1628" stroke="#4a90e2"/>
+        <!-- Settle Node -->
+        <rect x="900" y="120" width="72" height="60" rx="4" fill="#0a1628" stroke="#4a90e2" id="node-settle"/>
         <text x="936" y="146" text-anchor="middle" fill="#4a90e2" font-family="Inter,sans-serif" font-size="13" font-weight="700">Settle</text>
         <text x="936" y="164" text-anchor="middle" fill="#9ca3af" font-family="JetBrains Mono,monospace" font-size="9">1 tx</text>
       </svg>
@@ -571,55 +613,132 @@ contract FlashWallet is FlashLoanSimpleReceiverBase {
   </div>
 </section>
 
-<!-- ============ PRICING ============ -->
-<section class="section" id="pricing" style="position:relative;">
+<!-- ============ AGENTIC MCP & FLASH ROUTE BUYS ============ -->
+<section class="section" id="agentic-mcp" style="position:relative; border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
   <div class="bg-grid"></div>
   <div class="wrap">
     <div class="section-head reveal">
-      <span class="eyebrow">Pricing</span>
-      <h2>Start free. Pay as you route.</h2>
-      <p>A flat 2 bps on flash-loan notional applies across all tiers. SaaS plans add higher rate limits, support and managed services.</p>
+      <span class="eyebrow">Agentic AI Hub</span>
+      <h2>Web3 Agentic MCP &amp; Flash Route Buys</h2>
+      <p>Instruct autonomous AI agents to scout and capture DeFi opportunities. Select a pre-built strategy template, customize parameters, and execute atomic trades using the Model Context Protocol (MCP).</p>
     </div>
-    <div class="pricing-grid">
-      <div class="price-card reveal">
-        <div class="plan">Free <span></span></div>
-        <div class="amount">$0</div>
-        <p class="desc">For prototypes and solo builders shipping their first strategy.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Full SDK &amp; REST API access</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> All 6 chains, all 4 providers</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> 25,000 API calls / month</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Community support</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> 2 bps on routed notional</li>
-        </ul>
-        <a href="mailto:hello@flashrouter.io?subject=API%20Key%20-%20Free%20Tier" class="btn btn-secondary">Get API Key</a>
+
+    <div class="studio-grid reveal">
+      <!-- Templates Selection (Left Column) -->
+      <div class="studio-sidebar">
+        <h3 class="studio-title">Select Execution Template</h3>
+        <div class="template-list">
+          <div class="template-card active" data-template="arbitrage">
+            <div class="template-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M4 4l17 17"/></svg>
+            </div>
+            <div class="template-info">
+              <h4>Cross-DEX Arbitrage</h4>
+              <p>Capture pool price discrepancies across Aerodrome and Uniswap V3.</p>
+            </div>
+          </div>
+          <div class="template-card" data-template="liquidation">
+            <div class="template-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 11l2 2 4-4"/></svg>
+            </div>
+            <div class="template-info">
+              <h4>Aave V3 Liquidation Loop</h4>
+              <p>Repay unhealthy debt positions, retrieve collateral, and swap to settle.</p>
+            </div>
+          </div>
+          <div class="template-card" data-template="refinance">
+            <div class="template-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </div>
+            <div class="template-info">
+              <h4>Collateral Debt Refinance</h4>
+              <p>Migrate debt positions between MakerDAO and Balancer vaults.</p>
+            </div>
+          </div>
+          <div class="template-card" data-template="private_guard">
+            <div class="template-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div class="template-info">
+              <h4>Private ZK Frontrun Guard</h4>
+              <p>Shield transaction routing path utilizing Railgun and private RPC relays.</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="price-card featured reveal">
-        <div class="plan">Pro <span class="badge">Popular</span></div>
-        <div class="amount">$499<span> / mo</span></div>
-        <p class="desc">For trading desks and teams running strategies in production.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Everything in Free</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> 5,000,000 API calls / month</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Strategy Builder web app</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Priority routing &amp; dedicated RPC</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Email &amp; Slack support, 99.9% SLA</li>
-        </ul>
-        <a href="mailto:hello@flashrouter.io?subject=Pro%20Tier%20Waitlist" class="btn btn-primary">Start Pro</a>
-      </div>
-      <div class="price-card reveal">
-        <div class="plan">Enterprise <span></span></div>
-        <div class="amount">Contact us</div>
-        <p class="desc">For funds and protocols at scale, with managed execution.</p>
-        <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Everything in Pro</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Unlimited / metered API</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Managed Bot Platform (20% profit share)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> Custom volume pricing on bps</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> KYB onboarding, dedicated engineer</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> <strong>Power Client Flash Wallets</strong> (custom isolated receivers)</li>
-        </ul>
-        <a href="mailto:sales@flashrouter.io?subject=Enterprise%20Inquiry" class="btn btn-secondary">Talk to sales</a>
+
+      <!-- Config & Code Output (Right Column) -->
+      <div class="studio-workspace">
+        <div class="workspace-tabs">
+          <button class="workspace-tab active" data-pane="config-pane">1. Formulate Deal</button>
+          <button class="workspace-tab" data-pane="code-pane">2. Developer Code</button>
+          <button class="workspace-tab" data-pane="mcp-pane">3. Agent Payload (MCP)</button>
+        </div>
+
+        <div class="workspace-content">
+          <!-- Pane 1: Configuration Form -->
+          <div class="workspace-pane active" id="config-pane">
+            <div class="config-grid">
+              <div class="input-group">
+                <label for="dealAsset">Loan Asset</label>
+                <select id="dealAsset">
+                  <option value="USDC">USDC (Base)</option>
+                  <option value="USDT">USDT (Tron)</option>
+                  <option value="WETH">WETH (Base)</option>
+                  <option value="WBTC">WBTC (Base)</option>
+                  <option value="DAI">DAI (Base)</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="dealAmount">Borrow Capital</label>
+                <input type="text" id="dealAmount" value="5,000,000">
+              </div>
+              <div class="input-group full-width">
+                <label for="dealStrategy">Target Strategy Contract Address</label>
+                <input type="text" id="dealStrategy" value="0x7d9a65d06dcc435a52D5880C6310Bd6E96c156DB" class="mono">
+              </div>
+              <div class="input-group full-width">
+                <label for="dealRouteArgs" id="argLabel">DEX Routes</label>
+                <input type="text" id="dealRouteArgs" value="Uniswap V3 [Base] => Aerodrome [Base]" class="mono">
+              </div>
+            </div>
+
+            <div class="execution-trigger">
+              <button id="runStudioBtn" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;">Run Agent Simulator</button>
+            </div>
+
+            <!-- Mini Terminal Output -->
+            <div class="studio-terminal">
+              <div class="terminal-header">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot green"></span>
+                <span class="terminal-title">Sovereign Agent Telemetry</span>
+              </div>
+              <div class="terminal-body" id="studioLogs" style="font-family:var(--font-mono);font-size:0.75rem;">System idle. Select a template and click "Run Agent Simulator" to test the x402 payment, ZK proof generation, and SDK loan route.</div>
+            </div>
+          </div>
+
+          <!-- Pane 2: SDK / Developer Code -->
+          <div class="workspace-pane" id="code-pane">
+            <div class="code-window">
+              <div class="code-header" style="background:var(--bg-2);padding:0.5rem;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);border-bottom:1px solid var(--border);">
+                <span>TypeScript SDK implementation snippet</span>
+              </div>
+              <pre class="code-body" id="studioCodeOutput" style="font-family:var(--font-mono);font-size:0.75rem;padding:1rem;margin:0;background:#060a12;overflow:x-auto;color:#a9b2c3;line-height:1.6;"></pre>
+            </div>
+          </div>
+
+          <!-- Pane 3: MCP Agent Payload -->
+          <div class="workspace-pane" id="mcp-pane">
+            <div class="code-window">
+              <div class="code-header" style="background:var(--bg-2);padding:0.5rem;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);border-bottom:1px solid var(--border);">
+                <span>MCP Client tool schema JSON payload</span>
+              </div>
+              <pre class="code-body" id="studioMcpOutput" style="font-family:var(--font-mono);font-size:0.75rem;padding:1rem;margin:0;background:#060a12;overflow:x-auto;color:#a9b2c3;line-height:1.6;"></pre>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -682,7 +801,7 @@ contract FlashWallet is FlashLoanSimpleReceiverBase {
         <a href="#mapped-routes">SDK &amp; API</a>
         <a href="#mapped-routes">Strategy Builder</a>
         <a href="#mapped-routes">Managed Bots</a>
-        <a href="#pricing">Pricing</a>
+        <a href="#agentic-mcp">Agentic AI</a>
       </div>
       <div class="footer-col">
         <h5>Developers</h5>

@@ -167,15 +167,19 @@ export class FlashRouter {
    * Get a signed quote without executing. Useful for showing the user
    * expected fees / gas / profit before they commit.
    */
-  async getQuote(input: {
-    chain: ChainName;
-    asset: Address;
-    amount: string;
-    provider?: Provider;
-  }): Promise<Quote> {
+  async getQuote(
+    input: {
+      chain: ChainName;
+      asset: Address;
+      amount: string;
+      provider?: Provider;
+    },
+    headers?: Record<string, string>,
+  ): Promise<Quote> {
     const res = await this.apiCall<Quote>("/v1/quote", {
       method: "POST",
       body: input,
+      headers,
     });
     return res;
   }
@@ -184,17 +188,21 @@ export class FlashRouter {
    * Dry-run a strategy against a Tenderly fork. Returns predicted profit,
    * gas, and revert reason if any.
    */
-  async simulate(input: {
-    chain: ChainName;
-    asset: Address;
-    amount: string;
-    strategy: Address;
-    strategyData: Hex;
-    provider: Provider;
-  }): Promise<SimulationResult> {
+  async simulate(
+    input: {
+      chain: ChainName;
+      asset: Address;
+      amount: string;
+      strategy: Address;
+      strategyData: Hex;
+      provider: Provider;
+    },
+    headers?: Record<string, string>,
+  ): Promise<SimulationResult> {
     return await this.apiCall<SimulationResult>("/v1/simulate", {
       method: "POST",
       body: input,
+      headers,
     });
   }
 
@@ -243,7 +251,7 @@ export class FlashRouter {
 
   private async apiCall<T>(
     path: string,
-    init: { method: "GET" | "POST"; body?: unknown },
+    init: { method: "GET" | "POST"; body?: unknown; headers?: Record<string, string> },
   ): Promise<T> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeoutMs);
@@ -255,6 +263,7 @@ export class FlashRouter {
           "Content-Type": "application/json",
           Authorization: `Bearer ${this.apiKey}`,
           "User-Agent": "@flashrouter/sdk",
+          ...(init.headers ?? {}),
         },
         body: init.body ? JSON.stringify(init.body) : undefined,
         signal: controller.signal,
@@ -262,9 +271,16 @@ export class FlashRouter {
 
       if (!res.ok) {
         const text = await res.text();
+        const responseHeaders: Record<string, string> = {};
+        res.headers.forEach((val, key) => {
+          responseHeaders[key.toLowerCase()] = val;
+        });
         throw new FlashRouterError(
           `API ${init.method} ${path} failed: ${res.status} ${text}`,
           "API_ERROR",
+          undefined,
+          res.status,
+          responseHeaders,
         );
       }
       return (await res.json()) as T;
